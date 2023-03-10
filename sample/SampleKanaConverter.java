@@ -40,4 +40,37 @@ class SampleKanaConverter
           JavaBaseConstants.COLUMN_NAME_DATA, message.getData())));
       writer.write(System.lineSeparator());
     }
+    
+    @Override
+    protected void close(boolean hasFailed) throws IOException {
+      LOGGER.info("finalizing consumer.");
+
+      for (final Map.Entry<String, WriteConfig> entries : writeConfigs.entrySet()) {
+        try {
+          entries.getValue().getWriter().flush();
+          entries.getValue().getWriter().close();
+        } catch (Exception e) {
+          hasFailed = true;
+          LOGGER.error("failed to close writer for: {}.", entries.getKey());
+        }
+      }
+      // do not persist the data, if there are any failures.
+      try {
+        if (!hasFailed) {
+          for (final WriteConfig writeConfig : writeConfigs.values()) {
+            Files.move(writeConfig.getTmpPath(), writeConfig.getFinalPath(), StandardCopyOption.REPLACE_EXISTING);
+            LOGGER.info(String.format("File output: %s", writeConfig.getFinalPath()));
+          }
+        } else {
+          final String message = "Failed to output files in destination";
+          LOGGER.error(message);
+          throw new IOException(message);
+        }
+      } finally {
+        // clean up tmp files.
+        for (final WriteConfig writeConfig : writeConfigs.values()) {
+          Files.deleteIfExists(writeConfig.getTmpPath());
+        }
+      }
+    }
 }
