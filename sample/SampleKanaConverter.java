@@ -4,6 +4,9 @@ class SampleKanaConverter
 {
     public static void main(String[] args)
     {
+        
+        
+        
         // Check for arg input
         if(args.length < 1) {
             System.out.println("Must specify a term to convert");
