@@ -120,24 +120,8 @@ public class libConverter
     public static final int OP_ZEN_KATA_TO_ZEN_HIRA        = 0x00020000;
 
 
-    //// Maintain backwards compatibility (based on mb_convert_kana's "$option" parameter from PHP)
-    //// Details: http://php.net/manual/en/function.mb-convert-kana.php
-    protected static final Map<Character, Integer> LETTER_OP_CODE_LOOKUP;
-    static {
-        LETTER_OP_CODE_LOOKUP = new HashMap<Character, Integer>();
-        LETTER_OP_CODE_LOOKUP.put('A', OP_HAN_ASCII_TO_ZEN_ASCII);
-        LETTER_OP_CODE_LOOKUP.put('a', OP_ZEN_ASCII_TO_HAN_ASCII);
-        LETTER_OP_CODE_LOOKUP.put('C', OP_ZEN_HIRA_TO_ZEN_KATA);
-        LETTER_OP_CODE_LOOKUP.put('c', OP_ZEN_KATA_TO_ZEN_HIRA);
-        LETTER_OP_CODE_LOOKUP.put('H', OP_HAN_KATA_TO_ZEN_HIRA);
-        LETTER_OP_CODE_LOOKUP.put('h', OP_ZEN_HIRA_TO_HAN_KATA);
-        LETTER_OP_CODE_LOOKUP.put('K', OP_HAN_KATA_TO_ZEN_KATA);
-        LETTER_OP_CODE_LOOKUP.put('k', OP_ZEN_KATA_TO_HAN_KATA);
-        LETTER_OP_CODE_LOOKUP.put('N', OP_HAN_NUMBER_TO_ZEN_NUMBER);
-        LETTER_OP_CODE_LOOKUP.put('n', OP_ZEN_NUMBER_TO_HAN_NUMBER);
-        LETTER_OP_CODE_LOOKUP.put('R', OP_HAN_LETTER_TO_ZEN_LETTER);
-        LETTER_OP_CODE_LOOKUP.put('r', OP_ZEN_LETTER_TO_HAN_LETTER);
-        LETTER_OP_CODE_LOOKUP.put('S', OP_HAN_SPACE_TO_ZEN_SPACE);
-        LETTER_OP_CODE_LOOKUP.put('s', OP_ZEN_SPACE_TO_HAN_SPACE);
+    public static String convertKana(String original_string, int conversion_ops)
+    {
+        return convertKana(original_string, conversion_ops, "");
     }
 }
