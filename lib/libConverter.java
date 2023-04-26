@@ -25,4 +25,119 @@ import java.util.Set;
   */
 public class libConverter
 {
+     // Conversion Operations Types
+    //// Matched numeric values to originals in PHP's source code
+    //// https://github.com/php/php-src/blob/a84e5dc37dc0ff8c313164d9db141d3d9f2b2730/ext/mbstring/mbstring.c#L3434
+
+    /**
+      * <b>Conversion Op Flag</b>: Standard-width (<i>hankaku</i>) ASCII to double-width (<i>zenkaku</i>).
+      * See <a target="_blank" href="http://mariten.github.io/kanatools-java/kana-converter/#conversion-list">Conversion Op Guide</a> for full details.
+      */
+    public static final int OP_HAN_ASCII_TO_ZEN_ASCII      = 0x00000001;
+
+    /**
+      * <b>Conversion Op Flag</b>: Standard-width (<i>hankaku</i>) alphabetic letters to double-width (<i>zenkaku</i>).
+      * See <a target="_blank" href="http://mariten.github.io/kanatools-java/kana-converter/#conversion-list">Conversion Op Guide</a> for full details.
+      */
+    public static final int OP_HAN_LETTER_TO_ZEN_LETTER    = 0x00000002;
+
+    /**
+      * <b>Conversion Op Flag</b>: Standard-width (<i>hankaku</i>) numbers to double-width (<i>zenkaku</i>).
+      * See <a target="_blank" href="http://mariten.github.io/kanatools-java/kana-converter/#conversion-list">Conversion Op Guide</a> for full details.
+      */
+    public static final int OP_HAN_NUMBER_TO_ZEN_NUMBER    = 0x00000004;
+
+    /**
+      * <b>Conversion Op Flag</b>: Standard-width (<i>hankaku</i>) spaces to double-width (<i>zenkaku</i>).
+      * See <a target="_blank" href="http://mariten.github.io/kanatools-java/kana-converter/#conversion-list">Conversion Op Guide</a> for full details.
+      */
+    public static final int OP_HAN_SPACE_TO_ZEN_SPACE      = 0x00000008;
+
+    /**
+      * <b>Conversion Op Flag</b>: Half-width (<i>hankaku</i>) katakana to full-width (<i>zenkaku</i>).
+      * See <a target="_blank" href="http://mariten.github.io/kanatools-java/kana-converter/#conversion-list">Conversion Op Guide</a> for full details.
+      */
+    public static final int OP_HAN_KATA_TO_ZEN_KATA        = 0x00000100;
+
+    /**
+      * <b>Conversion Op Flag</b>: Half-width (<i>hankaku</i>) katakana to full-width (<i>zenkaku</i>) hiragana.
+      * See <a target="_blank" href="http://mariten.github.io/kanatools-java/kana-converter/#conversion-list">Conversion Op Guide</a> for full details.
+      */
+    public static final int OP_HAN_KATA_TO_ZEN_HIRA        = 0x00000200;
+
+    /**
+      * <b>Conversion Op Flag</b>: Keep <i>hankaku</i> katakana diacritic marks separate.
+      * See <a target="_blank" href="http://mariten.github.io/kanatools-java/kana-converter/#conversion-list">Conversion Op Guide</a> for full details.
+      */
+    public static final int OP_KEEP_DIACRITIC_MARKS_APART  = 0x00100000;
+
+    /**
+      * <b>Conversion Op Flag</b>: Double-width (<i>zenkaku</i>) ASCII characters to standard-width (<i>hankaku</i>).
+      * See <a target="_blank" href="http://mariten.github.io/kanatools-java/kana-converter/#conversion-list">Conversion Op Guide</a> for full details.
+      */
+    public static final int OP_ZEN_ASCII_TO_HAN_ASCII      = 0x00000010;
+
+    /**
+      * <b>Conversion Op Flag</b>: Double-width (<i>zenkaku</i>) alphabetic letters to standard-width (<i>hankaku</i>).
+      * See <a target="_blank" href="http://mariten.github.io/kanatools-java/kana-converter/#conversion-list">Conversion Op Guide</a> for full details.
+      */
+    public static final int OP_ZEN_LETTER_TO_HAN_LETTER    = 0x00000020;
+
+    /**
+      * <b>Conversion Op Flag</b>: Double-width (<i>zenkaku</i>) numbers to standard-width (<i>hankaku</i>).
+      * See <a target="_blank" href="http://mariten.github.io/kanatools-java/kana-converter/#conversion-list">Conversion Op Guide</a> for full details.
+      */
+    public static final int OP_ZEN_NUMBER_TO_HAN_NUMBER    = 0x00000040;
+
+    /**
+      * <b>Conversion Op Flag</b>: Double-width (<i>zenkaku</i>) spaces to standard-width (<i>hankaku</i>).
+      * See <a target="_blank" href="http://mariten.github.io/kanatools-java/kana-converter/#conversion-list">Conversion Op Guide</a> for full details.
+      */
+    public static final int OP_ZEN_SPACE_TO_HAN_SPACE      = 0x00000080;
+
+    /**
+      * <b>Conversion Op Flag</b>: Full-width (<i>zenkaku</i>) katakana to half-width (<i>hankaku</i>).
+      * See <a target="_blank" href="http://mariten.github.io/kanatools-java/kana-converter/#conversion-list">Conversion Op Guide</a> for full details.
+      */
+    public static final int OP_ZEN_KATA_TO_HAN_KATA        = 0x00001000;
+
+    /**
+      * <b>Conversion Op Flag</b>: Full-width (<i>zenkaku</i>) hirgana to half-width (<i>hankaku</i>) katakana.
+      * See <a target="_blank" href="http://mariten.github.io/kanatools-java/kana-converter/#conversion-list">Conversion Op Guide</a> for full details.
+      */
+    public static final int OP_ZEN_HIRA_TO_HAN_KATA        = 0x00002000;
+
+    /**
+      * <b>Conversion Op Flag</b>: Full-width (<i>zenkaku</i>) hiragana to full-width (<i>hankaku</i>) katakana.
+      * See <a target="_blank" href="http://mariten.github.io/kanatools-java/kana-converter/#conversion-list">Conversion Op Guide</a> for full details.
+      */
+    public static final int OP_ZEN_HIRA_TO_ZEN_KATA        = 0x00010000;
+
+    /**
+      * <b>Conversion Op Flag</b>: Full-width (<i>zenkaku</i>) katakana to full-width (<i>zenkaku</i>) hiragana.
+      * See <a target="_blank" href="http://mariten.github.io/kanatools-java/kana-converter/#conversion-list">Conversion Op Guide</a> for full details.
+      */
+    public static final int OP_ZEN_KATA_TO_ZEN_HIRA        = 0x00020000;
+
+
+    //// Maintain backwards compatibility (based on mb_convert_kana's "$option" parameter from PHP)
+    //// Details: http://php.net/manual/en/function.mb-convert-kana.php
+    protected static final Map<Character, Integer> LETTER_OP_CODE_LOOKUP;
+    static {
+        LETTER_OP_CODE_LOOKUP = new HashMap<Character, Integer>();
+        LETTER_OP_CODE_LOOKUP.put('A', OP_HAN_ASCII_TO_ZEN_ASCII);
+        LETTER_OP_CODE_LOOKUP.put('a', OP_ZEN_ASCII_TO_HAN_ASCII);
+        LETTER_OP_CODE_LOOKUP.put('C', OP_ZEN_HIRA_TO_ZEN_KATA);
+        LETTER_OP_CODE_LOOKUP.put('c', OP_ZEN_KATA_TO_ZEN_HIRA);
+        LETTER_OP_CODE_LOOKUP.put('H', OP_HAN_KATA_TO_ZEN_HIRA);
+        LETTER_OP_CODE_LOOKUP.put('h', OP_ZEN_HIRA_TO_HAN_KATA);
+        LETTER_OP_CODE_LOOKUP.put('K', OP_HAN_KATA_TO_ZEN_KATA);
+        LETTER_OP_CODE_LOOKUP.put('k', OP_ZEN_KATA_TO_HAN_KATA);
+        LETTER_OP_CODE_LOOKUP.put('N', OP_HAN_NUMBER_TO_ZEN_NUMBER);
+        LETTER_OP_CODE_LOOKUP.put('n', OP_ZEN_NUMBER_TO_HAN_NUMBER);
+        LETTER_OP_CODE_LOOKUP.put('R', OP_HAN_LETTER_TO_ZEN_LETTER);
+        LETTER_OP_CODE_LOOKUP.put('r', OP_ZEN_LETTER_TO_HAN_LETTER);
+        LETTER_OP_CODE_LOOKUP.put('S', OP_HAN_SPACE_TO_ZEN_SPACE);
+        LETTER_OP_CODE_LOOKUP.put('s', OP_ZEN_SPACE_TO_HAN_SPACE);
+    }
 }
